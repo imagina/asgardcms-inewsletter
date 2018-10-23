@@ -9,6 +9,8 @@ use Modules\Inewsletter\Http\Requests\CreateSubscribersRequest;
 use Modules\Inewsletter\Http\Requests\UpdateSubscribersRequest;
 use Modules\Inewsletter\Repositories\SubscribersRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Illuminate\Support\Facades\Validator;
+
 
 class SubscribersController extends AdminBaseController
 {
@@ -52,13 +54,29 @@ class SubscribersController extends AdminBaseController
      * @param  CreateSubscribersRequest $request
      * @return Response
      */
+
+
     public function store(CreateSubscribersRequest $request)
     {
         //dd($request->all());
+        $data = $this->subscribers->all();
+        /* valida que haya catpcha*/
+        if (array_key_exists('g-recaptcha-response', $data)) {
+
+            $validator = \Validator::make($data, [
+                'g-recaptcha-response' => 'required|captcha'
+            ]);
+            if ($validator->fails()) {
+                $response['status']="fail";
+                $response['data']["g-recaptcha-response"] = trans('inewsletter::common.captcha_required');
+            }
+        }
+
         Subscribers::create($request->all());
 
         return redirect()->route('admin.inewsletter.subscribers.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('inewsletter::subscribers.title.subscribers')]));
+            ->withSuccess(trans('core::core.messages.resource created',
+                ['name' => trans('inewsletter::subscribers.title.subscribers')]));
 
 
     }

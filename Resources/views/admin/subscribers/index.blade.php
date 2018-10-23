@@ -1,5 +1,5 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
 @extends('layouts.master')
-
 @section('content-header')
     <h1>
         {{ trans('inewsletter::subscribers.title.subscribers') }}
@@ -83,8 +83,8 @@
                             <tfoot>
                             <tr>
                                 <th>id</th>
-                                <th>Nombre</th>
                                 <th>E-mail</th>
+                                <th>Nombre</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>

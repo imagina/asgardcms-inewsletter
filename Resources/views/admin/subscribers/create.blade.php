@@ -1,5 +1,5 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
 @extends('layouts.master')
-
 @section('content-header')
     <h1>
         {{ trans('inewsletter::subscribers.title.create subscribers') }}
@@ -12,13 +12,32 @@
 @stop
 
 @section('content')
-    {!! Form::open(['route' => ['admin.inewsletter.subscribers.store'], 'method' => 'post']) !!}
+
+    {!! Form::open(['route' => ['admin.inewsletter.subscribers.store'],'id'=>'i-recaptcha', 'method' => 'post']) !!}
+
+    @if ($errors->has('g-recaptcha-response'))
+        <span class="help-block">
+            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+        </span>
+    @endif
+
+    {{csrf_field()}}
     <div class="row">
         <div class="col-md-12">
                 @include('inewsletter::admin.subscribers.partials.create-fields')
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.inewsletter.subscribers.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        @captcha
+                        <button
+                                class="btn btn-primary btn-flat g-recaptcha"
+                                data-callback="submit">
+                            {{trans('core::core.button.create')}}
+                        </button>
+
+                        <a class="btn btn-danger pull-right btn-flat"
+                           href="{{ route('admin.inewsletter.subscribers.index')}}">
+                            <i class="fa fa-times"></i>
+                            {{ trans('core::core.button.cancel') }}
+                        </a>
                     </div>
         </div>
     </div>

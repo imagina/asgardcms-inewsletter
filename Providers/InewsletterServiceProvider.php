@@ -49,7 +49,9 @@ class InewsletterServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array();
+        return array(
+
+        );
     }
 
     private function registerBindings()

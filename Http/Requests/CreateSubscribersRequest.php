@@ -10,6 +10,8 @@ class CreateSubscribersRequest extends BaseFormRequest
     {
         return [
             'email'=>'required|email|unique:inewsletter__subscribers',
+            'name'=>'required|min:2',
+            'g-recaptcha-response' => 'required|captcha',
         ];
     }
 
@@ -28,6 +30,9 @@ class CreateSubscribersRequest extends BaseFormRequest
     {
         return [
             'email.unique' => 'Su correo ya está registrado.',
+            'email.required' => 'El Email es Requerido',
+            'name.required' => 'El Nombre es Requerido',
+            'g-recaptcha-response.required' => '¡El Recaptcha es requerido!'
         ];
     }
 
